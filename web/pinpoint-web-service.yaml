@@ -1,0 +1,24 @@
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    kompose.cmd: kompose convert
+    kompose.version: 1.1.0 (36652f6)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: pinpoint-web
+  name: pinpoint-web
+spec:
+  type: NodePort
+  ports:
+  - name: "9997"
+    port: 9997
+    targetPort: 9997
+  - name: "8080"
+    port: 8080
+    targetPort: 8080
+    nodePort: 31080
+  selector:
+    io.kompose.service: pinpoint-web
+status:
+  loadBalancer: {}

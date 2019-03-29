@@ -1,0 +1,68 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert
+    kompose.version: 1.1.0 (36652f6)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: pinpoint-agent
+  name: pinpoint-agent
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        io.kompose.service: pinpoint-agent
+    spec:
+      containers:
+      - env:
+        - name:COLLECTOR_IP
+          valueFrom:
+            configMapKeyRef:
+              name: pinpoint-config
+              key: COLLECTOR_IP
+        - name: COLLECTOR_SPAN_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: pinpoint-config
+              key: COLLECTOR_SPAN_PORT
+        - name: COLLECTOR_STAT_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: pinpoint-config
+              key: COLLECTOR_STAT_PORT
+        - name: COLLECTOR_TCP_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: pinpoint-config
+              key: COLLECTOR_TCP_PORT
+        - name: DEBUG_LEVEL
+          valueFrom:
+            configMapKeyRef:
+              name: pinpoint-config
+              key: DEBUG_LEVEL
+        - name: PROFILER_SAMPLING_RATE
+          valueFrom:
+            configMapKeyRef:
+              name: pinpoint-config
+              key: PROFILER_SAMPLING_RATE
+        image: 'private.docker.hub:5000/pinpointdocker/pinpoint-agent:1.8.1'
+        name: pinpoint-agent
+        resources: {}
+        volumeMounts:
+        - mountPath: /pinpoint-agent
+          name: data-volume
+        - name: config-volume
+          mountPath: /etc/config
+      restartPolicy: Always
+      volumes:
+      - name: data-volume
+        emptyDir: {}
+      - name: config-volume
+        configMap:
+          name: pinpoint-config
+status: {}

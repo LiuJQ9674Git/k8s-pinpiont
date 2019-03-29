@@ -1,0 +1,109 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert
+    kompose.version: 1.1.0 (36652f6)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: pinpoint-web
+  name: pinpoint-web
+spec:
+  replicas: 1
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        io.kompose.service: pinpoint-web
+    spec:
+      containers:
+      - env:
+        - name: ADMIN_PASSWORD
+          value: admin
+          #valueFrom:
+          #  configMapKeyRef:
+          #    name: pinpoint-config
+          #    key: ADMIN_PASSWORD
+        - name: ANALYTICS
+          value: "true"
+          #valueFrom:
+          #  configMapKeyRef:
+          #    name: pinpoint-config
+          #    key: ANALYTICS
+        - name: BATCH_ENABLE
+          value: "true"
+          #valueFrom:
+          #  configMapKeyRef:
+          #    name: pinpoint-config
+          #    key: BATCH_ENABLE
+        - name: BATCH_FLINK_SERVER
+          value: "pinpoint-flink-jobmanager"
+          #valueFrom:
+          #  configMapKeyRef:
+          #    name: pinpoint-config
+          #    key: BATCH_FLINK_SERVER
+        - name: BATCH_SERVER_IP
+          value: "127.0.0.127"
+          #valueFrom:
+          #  configMapKeyRef:
+          #    name: pinpoint-config
+          #    key: BATCH_SERVER_IP
+        - name: CLUSTER_ENABLE
+          value: "true"
+          #valueFrom:
+          #  configMapKeyRef:
+          #    name: pinpoint-config
+          #    key: CLUSTER_ENABLE
+        - name: CLUSTER_ZOOKEEPER_ADDRESS
+          value: "zoo1"
+          #valueFrom:
+          #  configMapKeyRef:
+          #    name: pinpoint-config
+          #    key: CLUSTER_ZOOKEEPER_ADDRESS
+        - name: CONFIG_SHOW_APPLICATIONSTAT
+          value: "true"
+          #valueFrom:
+          #  configMapKeyRef:
+          #    name: pinpoint-config
+          #    key: CONFIG_SHOW_APPLICATIONSTAT
+        - name: DEBUG_LEVEL
+          value: "INFO"
+          #valueFrom:
+          #  configMapKeyRef:
+          #    name: pinpoint-config
+          #    key: DEBUG_LEVEL
+        - name: HBASE_HOST
+          value: pinpoint-hbase
+          #valueFrom:
+          #  configMapKeyRef:
+          #    name: pinpoint-config
+          #    key: HBASE_HOST
+        - name: HBASE_PORT
+          value: "2181"
+          #valueFrom:
+          #  configMapKeyRef:
+          #    name: pinpoint-config
+          #    key: HBASE_PORT
+        - name: JDBC_URL
+          value: "jdbc:mysql://pinpoint-mysql:13306/pinpoint?characterEncoding=UTF-8"
+        - name: JDBC_PASSWORD
+          value: admin
+          #valueFrom:
+          #  configMapKeyRef:
+          #    name: pinpoint-config
+          #    key: JDBC_PASSWORD
+        - name: JDBC_USERNAME
+          value: admin
+          #valueFrom:
+          #  configMapKeyRef:
+          #    name: pinpoint-config
+          #    key: JDBC_USERNAME
+        image: 'private.docker.hub:5000/pinpointdocker/pinpoint-web:1.8.1'
+        name: pinpoint-web
+        ports:
+        - containerPort: 9997
+        - containerPort: 8080
+        resources: {}
+      restartPolicy: Always
+status: {}

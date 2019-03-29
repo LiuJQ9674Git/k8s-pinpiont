@@ -1,0 +1,21 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    io.kompose.service: zoo1
+  name: zoo1
+spec:
+  replicas: 1
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        io.kompose.service: zoo1
+    spec:
+      containers:
+        - image: private.docker.hub:5000/zookeeper:3.4.8
+          name: zoo1
+          resources: {}
+      restartPolicy: Always
+status: {}
