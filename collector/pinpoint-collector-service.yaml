@@ -9,18 +9,23 @@ metadata:
     io.kompose.service: pinpoint-collector
   name: pinpoint-collector
 spec:
+  #clusterIP: None
+  type: NodePort
   ports:
   - name: "9994"
     port: 9994
     targetPort: 9994
+    nodePort: 31994
   - name: "9995"
     port: 9995
     protocol: UDP
     targetPort: 9995
+    nodePort: 31095
   - name: "9996"
     port: 9996
     protocol: UDP
     targetPort: 9996
+    nodePort: 31096
   selector:
     io.kompose.service: pinpoint-collector
 status:

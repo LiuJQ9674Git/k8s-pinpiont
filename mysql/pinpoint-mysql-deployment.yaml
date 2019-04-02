@@ -23,45 +23,37 @@ spec:
         name: pinpoint-mysql
         env:
           - name: MYSQL_DATABASE
-            value: pinpoint
-            #valueFrom:
-            # configMapKeyRef:
-            #   name: pinpoint-config
-            #   key: MYSQL_DATABASE
+            #value: pinpoint
+            valueFrom:
+             configMapKeyRef:
+               name: pinpoint-env
+               key: MYSQL_DATABASE
           - name: MYSQL_PASSWORD
-            value: admin
-            #valueFrom:
-            # configMapKeyRef:
-            #   name: pinpoint-config
-            #   key: MYSQL_PASSWORD
+            #value: admin
+            valueFrom:
+             configMapKeyRef:
+               name: pinpoint-env
+               key: MYSQL_PASSWORD
           - name: MYSQL_ROOT_PASSWORD
-            value: root123
-            #valueFrom:
-            # configMapKeyRef:
-            #  name: pinpoint-config
-            #  key: MYSQL_ROOT_PASSWORD
+            #value: root123
+            valueFrom:
+             configMapKeyRef:
+              name: pinpoint-env
+              key: MYSQL_ROOT_PASSWORD
           - name: MYSQL_USER
-            value: admin
-            #valueFrom:
-            # configMapKeyRef:
-            #  name: pinpoint-config
-            #  key: MYSQL_USER
+            #value: admin
+            valueFrom:
+             configMapKeyRef:
+              name: pinpoint-env
+              key: MYSQL_USER
         ports:
           - containerPort: 3306
         resources: {}
         volumeMounts:
           #- mountPath: /var/lib/mysql
           #  name: mysql-data
-          - name: config-volume
-            mountPath: /etc/config
       restartPolicy: Always
       volumes:
       #- name: mysql-data
-      #  emptyDir: {}
-      - name: config-volume
-        configMap:
-          name: pinpoint-config
-          items:
-            - key: "pinpoint-config.yaml"
-              path: "pinpoint-config.yaml" 
+      #  emptyDir: {} 
 status: {}

@@ -9,6 +9,7 @@ metadata:
     io.kompose.service: pinpoint-hbase
   name: pinpoint-hbase
 spec:
+  clusterIP: None
   ports:
   - name: "2181"
     port: 2181

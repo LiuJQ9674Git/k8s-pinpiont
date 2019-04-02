@@ -1,0 +1,1 @@
+docker build -t "private.docker.hub:5000/pinpointdocker/pinpoint-quickstart:v1.8.1" .

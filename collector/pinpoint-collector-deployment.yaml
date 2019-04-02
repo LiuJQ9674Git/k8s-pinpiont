@@ -1,5 +1,8 @@
-apiVersion: extensions/v1beta1
+#:apiVersion: extensions/v1beta1
+#kind: Deployment
+apiVersion: apps/v1
 kind: Deployment
+#kind: StatefulSet
 metadata:
   annotations:
     kompose.cmd: kompose convert
@@ -10,7 +13,11 @@ metadata:
   name: pinpoint-collector
 spec:
   replicas: 1
-  strategy: {}
+  selector:
+    matchLabels:
+      io.kompose.service: pinpoint-collector
+  #strategy: {}
+  #serviceName: pinpoint-collector
   template:
     metadata:
       creationTimestamp: null
@@ -21,19 +28,47 @@ spec:
       - name: pinpoint-collector
         env:
          - name: CLUSTER_ENABLE
-           value: "true"
+           #value: "false"
+           valueFrom:
+            configMapKeyRef:
+              name: pinpoint-env
+              key: CLUSTER_ENABLE
          - name: CLUSTER_ZOOKEEPER_ADDRESS
-           value: zoo1
+           #value: "zoo1"
+           valueFrom:
+            configMapKeyRef:
+              name: pinpoint-env
+              key: CLUSTER_ZOOKEEPER_ADDRESS
          - name: DEBUG_LEVEL
-           value: INFO
+           #value: INFO
+           valueFrom:
+            configMapKeyRef:
+              name: pinpoint-env
+              key: DEBUG_LEVEL
          - name: FLINK_CLUSTER_ENABLE
-           value: "true"
+           #value: "false"
+           valueFrom:
+            configMapKeyRef:
+              name: pinpoint-env
+              key: FLINK_CLUSTER_ENABLE
          - name: FLINK_CLUSTER_ZOOKEEPER_ADDRESS
-           value: zoo1
+           #value: "zoo1"
+           valueFrom:
+            configMapKeyRef:
+              name: pinpoint-env
+              key: FLINK_CLUSTER_ZOOKEEPER_ADDRESS
          - name: HBASE_HOST
-           value: pinpoint-hbase
+           #value: "pinpoint-hbase"
+           valueFrom:
+            configMapKeyRef:
+              name: pinpoint-env
+              key: HBASE_HOST
          - name: HBASE_PORT
-           value: "2181"
+           #value: "2181"
+           valueFrom:
+            configMapKeyRef:
+              name: pinpoint-env
+              key: HBASE_PORT
         image: 'private.docker.hub:5000/pinpointdocker/pinpoint-collector:1.8.1'       
         ports:
         - containerPort: 9994

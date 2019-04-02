@@ -20,49 +20,50 @@ spec:
     spec:
       containers:
       - env:
-        - name:COLLECTOR_IP
+        - name: COLLECTOR_IP
+          #value: pinpoint-collector
           valueFrom:
             configMapKeyRef:
-              name: pinpoint-config
+              name: pinpoint-env
               key: COLLECTOR_IP
         - name: COLLECTOR_SPAN_PORT
+          #value: "9996"
           valueFrom:
             configMapKeyRef:
-              name: pinpoint-config
+              name: pinpoint-env
               key: COLLECTOR_SPAN_PORT
         - name: COLLECTOR_STAT_PORT
+          #value: "9995"
           valueFrom:
             configMapKeyRef:
-              name: pinpoint-config
+              name: pinpoint-env
               key: COLLECTOR_STAT_PORT
         - name: COLLECTOR_TCP_PORT
+          #value: "9994"
           valueFrom:
             configMapKeyRef:
-              name: pinpoint-config
+              name: pinpoint-env
               key: COLLECTOR_TCP_PORT
         - name: DEBUG_LEVEL
+          #value:  INFO
           valueFrom:
             configMapKeyRef:
-              name: pinpoint-config
+              name: pinpoint-env
               key: DEBUG_LEVEL
         - name: PROFILER_SAMPLING_RATE
+          #value: "1"
           valueFrom:
             configMapKeyRef:
-              name: pinpoint-config
+              name: pinpoint-env
               key: PROFILER_SAMPLING_RATE
         image: 'private.docker.hub:5000/pinpointdocker/pinpoint-agent:1.8.1'
         name: pinpoint-agent
         resources: {}
         volumeMounts:
-        - mountPath: /pinpoint-agent
-          name: data-volume
-        - name: config-volume
-          mountPath: /etc/config
+        #- mountPath: /pinpoint-agent
+        #  name: data-volume
       restartPolicy: Always
       volumes:
-      - name: data-volume
-        emptyDir: {}
-      - name: config-volume
-        configMap:
-          name: pinpoint-config
+      #- name: data-volume
+      #  emptyDir: {}
 status: {}

@@ -21,18 +21,18 @@ spec:
       containers:
       - env:
         - name: JAVA_OPTS
-          value: -javaagent:/pinpoint-agent/pinpoint-bootstrap-.jar -Dpinpoint.agentId=pinpoint-quickstart
-            -Dpinpoint.applicationName=pinpoint-quickstart
-        image: private.docker.hub:5000/pinpointdocker/pinpoint-quickstart:latest
+          value: -javaagent:/pinpoint-agent/pinpoint-bootstrap-1.8.1.jar -Dpinpoint.agentId=pinpoint-quickstart -Dpinpoint.applicationName=pinpoint-quickstart
+        image: private.docker.hub:5000/pinpointdocker/pinpoint-quickstart:v1.8.1
+        imagePullPolicy: Always
         name: pinpoint-quickstart
         ports:
         - containerPort: 8080
         resources: {}
-        volumeMounts:
-        - mountPath: /pinpoint-agent
-          name: data-volume
+        #volumeMounts:
+        #- mountPath: /pinpoint-agent
+        #  name: data-volume
       restartPolicy: Always
-      volumes:
-      - name: data-volume
-        emptyDir: {}
+      #volumes:
+      #- name: data-volume
+      #  emptyDir: {}
 status: {}

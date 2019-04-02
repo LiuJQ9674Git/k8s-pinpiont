@@ -1,5 +1,7 @@
-apiVersion: extensions/v1beta1
-kind: Deployment
+#apiVersion: extensions/v1beta
+apiVersion: apps/v1
+#kind: Deployment
+kind: StatefulSet
 metadata:
   annotations:
     kompose.cmd: kompose convert
@@ -9,9 +11,14 @@ metadata:
     io.kompose.service: pinpoint-hbase
   name: pinpoint-hbase
 spec:
+  #replicas: 1
   replicas: 1
-  strategy:
-    type: Recreate
+  selector:
+    matchLabels:
+      io.kompose.service: pinpoint-hbase
+  serviceName: pinpoint-hbase
+  #strategy:
+  #  type: Recreate
   template:
     metadata:
       creationTimestamp: null
@@ -19,8 +26,8 @@ spec:
         io.kompose.service: pinpoint-hbase
     spec:
       containers:
-      - image: 'private.docker.hub:5000/pinpointdocker/pinpoint-hbase:1.8.1'
-        #imagePullPolicy: Always
+      - image: 'private.docker.hub:5000/pinpointdocker/pinpoint-hbase:1.8.1.1'
+        imagePullPolicy: Always
         name: pinpoint-hbase
         #${BASE_DIR}/hbase-${HBASE_VERSION}/bin/hbase master start
         #command:
@@ -31,7 +38,11 @@ spec:
         #环境变量
         env:
           - name: HBASE_ZOOKEEPER_QUORUM
-            value: zoo1, zoo2, zoo3
+            #value: zoo1, zoo2, zoo3
+            valueFrom:
+             configMapKeyRef:
+              name: pinpoint-env
+              key: HBASE_ZOOKEEPER_QUORUM
         ports:
         - containerPort: 2181
         - containerPort: 60000
@@ -39,23 +50,17 @@ spec:
         - containerPort: 60020
         - containerPort: 16030
         resources: {}
-        volumeMounts:
+        #volumeMounts:
         #- mountPath: /home/pinpoint/hbase
         #  name: pinpoint-hbase-claim0
         #- mountPath: /home/pinpoint/zookeeper
         #  name: pinpoint-hbase-claim1
-        - name: config-volume
-          mountPath: /etc/config
+        #- name: config-volume
+        #  mountPath: /etc/config
       restartPolicy: Always
-      volumes:
+      #volumes:
       #- name: pinpoint-hbase-claim0
       #  emptyDir: {}
       #- name: pinpoint-hbase-claim1
-      #  emptyDir: {}
-      - name: config-volume
-        configMap:
-          name: pinpoint-config
-          items:
-            - key: "pinpoint-config.yaml"
-              path: "pinpoint-config.yaml" 
+      #  emptyDir: {} 
 status: {}
